@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'PageController@index');
+
+Route::get('/auth/redirect', 'SocialController@redirect')->name('social.redirect');
+Route::get('/auth/callback', 'SocialController@callback')->name('social.callback');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', 'PageController@dashboard')->name('dashboard');
+
+    Route::resource('users', 'UserController');
 });
+
+require __DIR__ . '/auth.php';
