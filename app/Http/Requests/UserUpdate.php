@@ -39,7 +39,11 @@ class UserUpdate extends FormRequest
             'is_blocked' => [
                 'accepted',
                 'sometimes',
-            ]
+            ],
+            'file' => [
+                'sometimes',
+                'mimes:jpg,jpeg,png',
+                'max:2048']
         ];
     }
 }

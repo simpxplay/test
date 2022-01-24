@@ -7,19 +7,26 @@ namespace App\Services;
 use App\Models\Role;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 final class UserService extends BaseService
 {
-    public function store(array $data): User
+    public function store(array $data, UploadedFile $file = null): User
     {
         try {
             DB::beginTransaction();
 
             $user = new User($data);
-            //TODO: If we want to create user with another role update associate parameter to $data->role_id and add it in dto
+            //TODO: If we want to create user with another role update associate parameter to $data['role_id']
             $user->role()->associate(Role::where('title', Role::USER)->first());
             $user->save();
+
+            if ($file) {
+                $fileModel = app()->make(FileService::class)->upload($file);
+                $user->file()->associate($fileModel);
+                $user->save();
+            }
 
             DB::commit();
 
@@ -29,7 +36,7 @@ final class UserService extends BaseService
         }
     }
 
-    public function update(User $user, array $data): User
+    public function update(User $user, array $data, UploadedFile $file = null): User
     {
         try {
             DB::beginTransaction();
@@ -39,6 +46,13 @@ final class UserService extends BaseService
             //$user->role()->associate($data['role_id'] ?? $user->role);
             $user->is_blocked = (isset($data['is_blocked']) && $data['is_blocked'] === 'on') ? true : false;
             $user->save();
+
+            if ($file) {
+                if ($user->file()->exists()) {
+                    $user->file()->delete();
+                }
+                app()->make(FileService::class)->upload($file, $user);
+            }
 
             DB::commit();
 

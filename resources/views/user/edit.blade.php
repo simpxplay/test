@@ -15,6 +15,8 @@
                     <input name="name" value="{{ $user->name }}"><br>
                     <label>Email</label>
                     <input name="email" value="{{ $user->email }}"><br>
+                    <label>File</label>
+                    <input name="file" type="file"><br>
                     <label>Blocked</label>
                     <input name="is_blocked" type="checkbox" @if($user->is_blocked) checked @endif><br>
                     <input type="submit" value="Save">

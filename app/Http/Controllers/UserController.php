@@ -36,7 +36,7 @@ class UserController extends Controller
 
     public function update(UserUpdate $request, User $user)
     {
-        $this->userService->update($user, $request->validated());
+        $this->userService->update($user, $request->validated(), $request->file()['file']);
         return redirect()->route('users.index');
     }
 

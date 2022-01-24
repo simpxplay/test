@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Interfaces\FileableInterface;
 use App\Models\Relations\UserRelations;
 use App\Models\Scopes\UserScopes;
 use App\Traits\Uuid;
@@ -12,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FileableInterface
 {
     use HasApiTokens;
     use HasFactory;

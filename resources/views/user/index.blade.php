@@ -13,6 +13,7 @@
                 @if($users->count() > 0)
                     <table>
                         <tr>
+                            <th>File</th>
                             <th>Name</th>
                             <th>Email</th>
                             @if(\Illuminate\Support\Facades\Auth::user()->role->title === \App\Models\Role::ADMIN)
@@ -22,6 +23,7 @@
                         </tr>
                         @foreach($users as $user)
                             <tr>
+                                <td><img src="{{asset($user->file->file_path)}}" alt="File"></td>
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
                                 @if(\Illuminate\Support\Facades\Auth::user()->role->title === \App\Models\Role::ADMIN)
