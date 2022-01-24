@@ -22,7 +22,7 @@ Route::get('/auth/callback', 'SocialController@callback')->name('social.callback
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', 'PageController@dashboard')->name('dashboard');
 
-    Route::resource('users', 'UserController');
+    Route::resource('users', 'UserController')->except(['create', 'store']);
 });
 
 require __DIR__ . '/auth.php';

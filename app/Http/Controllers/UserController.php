@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use App\Http\Requests\UserDestroy;
+use App\Http\Requests\UserUpdate;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -20,21 +20,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::whereHas('role', function ($q) {
-            $q->where('title', Role::USER);
-        })->paginate(10);
+        $users = User::user()->paginate(10);
         return view('user.index', ['users' => $users]);
-    }
-
-    public function create()
-    {
-        return view('user.create');
-    }
-
-    public function store(Request $request)
-    {
-        $this->userService->store($request->validated());
-        return redirect()->route('users.index');
     }
 
     public function show(User $user)
@@ -47,13 +34,13 @@ class UserController extends Controller
         return view('user.edit', ['user' => $user]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserUpdate $request, User $user)
     {
         $this->userService->update($user, $request->validated());
         return redirect()->route('users.index');
     }
 
-    public function destroy(User $user)
+    public function destroy(UserDestroy $request, User $user)
     {
         $this->userService->delete($user);
         return redirect()->route('users.index');

@@ -10,27 +10,37 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <h2>Users</h2><br>
 
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        @if(\Illuminate\Support\Facades\Auth::user()->role->title === \App\Models\Role::ADMIN)
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        @endif
-                    </tr>
-                    @foreach($users as $user)
+                @if($users->count() > 0)
+                    <table>
                         <tr>
-                            <td>{{$user->name}}</td>
-                            <td>{{$user->email}}</td>
+                            <th>Name</th>
+                            <th>Email</th>
                             @if(\Illuminate\Support\Facades\Auth::user()->role->title === \App\Models\Role::ADMIN)
-                                <td><a href="{{route('users.edit', [$user->id])}}">Edit</a></td>
-                                <td><a href="{{route('users.destroy', [$user->id])}}">Delete</a></td>
+                                <th>Edit</th>
+                                <th>Delete</th>
                             @endif
                         </tr>
-                    @endforeach
-                    {{ $users->links() }}
-                </table>
+                        @foreach($users as $user)
+                            <tr>
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->email}}</td>
+                                @if(\Illuminate\Support\Facades\Auth::user()->role->title === \App\Models\Role::ADMIN)
+                                    <td><a href="{{ route('users.edit', [$user->id]) }}">Edit</a></td>
+                                    <td>
+                                        <form action="{{ route('users.destroy', [$user->id]) }}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+                                            <input type="submit" value="Delete">
+                                        </form>
+                                    </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                        {{ $users->links() }}
+                    </table>
+                @else
+                    No users yet
+                @endif
             </div>
         </div>
     </div>

@@ -37,6 +37,7 @@ final class UserService extends BaseService
             $user->fill($data);
             //TODO: uncomment if want to update role
             //$user->role()->associate($data['role_id'] ?? $user->role);
+            $user->is_blocked = (isset($data['is_blocked']) && $data['is_blocked'] === 'on') ? true : false;
             $user->save();
 
             DB::commit();

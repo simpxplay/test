@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('google_id')->nullable();
             $table->string('google_token')->nullable();
             $table->string('google_refresh_token')->nullable();
+            $table->boolean('is_blocked')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -18,9 +18,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        $admin = User::whereHas('role', function ($q) {
-            return $q->where('title', Role::ADMIN);
-        })->first();
+        $admin = User::admin()->first();
         if (!$admin) {
             $admin = new User(['name' => 'admin', 'email' => 'admin@admin', 'password' => Hash::make('admin')]);
             $admin->role()->associate(Role::where('title', Role::ADMIN)->first());

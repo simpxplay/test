@@ -12,9 +12,9 @@ class PageController extends Controller
     public function index()
     {
         $users = User::whereNotNull('google_id')
-        ->whereHas('role', function ($q) {
-            $q->where('title', Role::USER);
-        })->paginate(10);
+            ->where('is_blocked', false)
+            ->user()
+            ->paginate(10);
         return view('index', ['users' => $users]);
     }
 

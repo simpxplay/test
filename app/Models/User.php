@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Relations\UserRelations;
+use App\Models\Scopes\UserScopes;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,6 +19,7 @@ class User extends Authenticatable
     use Notifiable;
     use UserRelations;
     use Uuid;
+    use UserScopes;
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +33,7 @@ class User extends Authenticatable
         'google_id',
         'google_token',
         'google_refresh_token',
+        'is_blocked',
     ];
 
     /**
@@ -50,5 +53,6 @@ class User extends Authenticatable
      */
     protected array $casts = [
         'email_verified_at' => 'datetime',
+        'is_blocked' => 'boolean',
     ];
 }
